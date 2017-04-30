@@ -1,8 +1,7 @@
-# appnexus-pull-log-data-to-abs
 
-Pull AppNexus Log Level Data to Azure Blob Storage
+This script pulls "log level data" files from AppNexus to Azure Blob Storage
 
-# DEVELOPER INSTRUCTIONS
+# Instructions
 
 To run
 
