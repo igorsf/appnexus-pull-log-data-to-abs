@@ -129,7 +129,7 @@ CREATE EXTERNAL TABLE [asb].StandardFeed (
     [device_id] [int] NULL,
     [carrier_id] [int] NULL,
     [deal_id] [int] NULL,
-    [view_result] [nvarchar](40) NULL,
+    [view_result] [nvarchar](400) NULL,
     [application_id] [nvarchar](40) NULL,
     [supply_type] [nvarchar](40) NULL,
     [sdk_version] [nvarchar](40) NULL,
