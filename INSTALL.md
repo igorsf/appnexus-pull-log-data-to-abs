@@ -130,7 +130,7 @@ CREATE EXTERNAL TABLE [asb].StandardFeed (
     [carrier_id] [int] NULL,
     [deal_id] [int] NULL,
     [view_result] [nvarchar](400) NULL,
-    [application_id] [nvarchar](40) NULL,
+    [application_id] [nvarchar](400) NULL,
     [supply_type] [nvarchar](40) NULL,
     [sdk_version] [nvarchar](40) NULL,
     [ozone_id] [nvarchar](20) NULL,
@@ -154,7 +154,8 @@ CREATE EXTERNAL TABLE [asb].StandardFeed (
     [custom_model_id] [int] NULL,
     [custom_model_last_modified] [int] NULL,
     [leaf_name] [nvarchar](20) NULL,
-    [data_costs_cpm] [numeric](18,6) NULL
+    [data_costs_cpm] [numeric](18,6) NULL,
+    [device_type] [int] NULL
 )
 WITH
 (
