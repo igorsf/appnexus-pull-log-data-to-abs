@@ -7,11 +7,14 @@ import json
 import logging
 import logging.config
 
+from datetime import datetime
+from datetime import timedelta
+
 from azure.storage.blob import BlockBlobService
 
 from client import AppNexusClient
 
-logging.basicConfig()
+logging.basicConfig(format='%(asctime)s %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger("requests").setLevel(logging.DEBUG)
@@ -33,10 +36,10 @@ class Pull:
 
         self.pull_filename = settings.PULL_FILENAME
 
-        # fetch last pull timestamp
-        self.pull_timestamp = None
+        # fetch 3 hours before last pulled timestamp
+        self.pull_dt = None
         if os.path.exists(self.pull_filename):
-            self.pull_timestamp = time.gmtime(os.path.getmtime(self.pull_filename))
+            self.pull_dt = datetime.fromtimestamp(os.path.getmtime(self.pull_filename)) - timedelta(hours=3)
 
     def do_work(self):
 
@@ -49,18 +52,22 @@ class Pull:
         with open(self.pull_filename, 'a'):
             os.utime(self.pull_filename, None)
 
+        logger.info("finished work")
+
     def get_available_logs(self):
 
         params = {'siphon_name': 'standard_feed'}
 
-        if self.pull_timestamp:
-            params['updated_since'] = time.strftime("%Y_%m_%d_%H", self.pull_timestamp)
+        if self.pull_dt:
+            params['updated_since'] = self.pull_dt.strftime("%Y_%m_%d_%H")
 
         logger.debug("request params {0}".format(params))
 
         r = self.api_client.request('https://api.appnexus.com/siphon', params)
 
         resp = json.loads(r.content)["response"]
+
+        logger.debug("response siphons {0}".format(resp))
 
         if resp.get("status", False) != "OK":
             return None
