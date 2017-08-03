@@ -5,7 +5,7 @@ This script pulls "log level data" files from AppNexus to Azure Blob Storage
 
 To run
 
-    python -m appnexus.pull 
+    python -m appnexus.logleveldata 
 
 To install source folder in your python env
 

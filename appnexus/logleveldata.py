@@ -41,7 +41,7 @@ class Pull:
         if os.path.exists(self.pull_filename):
             self.pull_dt = datetime.fromtimestamp(os.path.getmtime(self.pull_filename)) - timedelta(hours=3)
 
-    def do_work(self):
+    def sync_log_level_data(self):
 
         log_files = self.get_available_logs()
 
@@ -122,5 +122,5 @@ class Pull:
 if __name__ == '__main__':
 
     p = Pull()
-    p.do_work()
+    p.sync_log_level_data()
 
