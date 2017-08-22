@@ -6,9 +6,14 @@ import settings
 import json
 import logging
 import logging.config
+import gzip
 
 from datetime import datetime
 from datetime import timedelta
+
+import tempfile
+
+import shutil
 
 from azure.storage.blob import BlockBlobService
 
@@ -96,6 +101,9 @@ class Pull:
 
                 file_path = self.download_file(r.url, filename)
 
+                # Replace word "NULL" with empty value. Polybase can't convert 'NULL' for numeric columns
+                self.replace(file_path, 'NULL', '')
+
                 if file_path:
                     self.block_blob_service.create_blob_from_path(container_name, blob_name, file_path)
                     logger.debug("upload file {0}".format(file_path))
@@ -118,6 +126,16 @@ class Pull:
                     f.flush()
 
         return file_path
+
+    @staticmethod
+    def replace(file_path, pattern, subst):
+        out_file_fd, out_file_path = tempfile.mkstemp(suffix=".gz")
+        with gzip.open(out_file_path, 'wb') as new_file:
+            with gzip.open(file_path, 'rb') as old_file:
+                for line in old_file:
+                    new_file.write(line.replace(pattern, subst))
+        os.remove(file_path)
+        shutil.move(out_file_path, file_path)
 
 if __name__ == '__main__':
 
