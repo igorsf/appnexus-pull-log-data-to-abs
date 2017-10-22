@@ -6,7 +6,7 @@ import json
 import pickle
 import logging
 
-logging.basicConfig(format='%(asctime)s %(message)s')
+logging.basicConfig(format='%(asctime)s %(name)-20s %(levelname)-5s %(message)s')
 
 logger = logging.getLogger(__name__)
 

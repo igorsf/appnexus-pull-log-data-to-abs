@@ -2,11 +2,11 @@ __author__ = 'igorsf'
 
 import os
 import time
-import settings
 import json
 import logging
 import logging.config
 import gzip
+from common import settings
 
 from datetime import datetime
 from datetime import timedelta
@@ -19,11 +19,13 @@ from azure.storage.blob import BlockBlobService
 
 from client import AppNexusClient
 
-logging.basicConfig(format='%(asctime)s %(message)s')
+logging.basicConfig(format='%(asctime)s %(name)-20s %(levelname)-5s %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger("requests").setLevel(logging.DEBUG)
 logging.getLogger("client").setLevel(logging.INFO)
+
+DSP_NAME = 'APPNEXUS'
 
 class Pull:
 
@@ -34,12 +36,14 @@ class Pull:
             settings.APPNEXUS_PASSWORD
         )
 
+        azure_account = settings.AZURE_ACCOUNTS[DSP_NAME]
+
         self.block_blob_service = BlockBlobService(
-            account_name=settings.AZURE_ACCOUNT_NAME,
-            account_key=settings.AZURE_ACCOUNT_KEY
+            account_name=azure_account['NAME'],
+            account_key=azure_account['KEY']
         )
 
-        self.pull_filename = settings.PULL_FILENAME
+        self.pull_filename = settings.PULL_FILES[DSP_NAME]['LLD']
 
         # fetch 3 hours before last pulled timestamp
         self.pull_dt = None

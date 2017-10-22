@@ -1,7 +1,6 @@
 __author__ = 'igorsf'
 
 import os
-import settings
 import json
 import logging
 import logging.config
@@ -9,6 +8,7 @@ import pyodbc
 
 from datetime import datetime
 from datetime import timedelta
+from common import settings
 
 from client import AppNexusClient
 
@@ -17,6 +17,8 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.getLogger("requests").setLevel(logging.DEBUG)
 logging.getLogger("client").setLevel(logging.INFO)
+
+DSP_NAME = 'APPNEXUS'
 
 class SyncCampaignSegments:
 
@@ -33,7 +35,7 @@ class SyncCampaignSegments:
                                    +db['HOST']+';PORT='+db['PORT']+';DATABASE='+db['DATABASE']
                                    +';UID='+db['USERNAME']+';PWD='+ db['PASSWORD'])
 
-        self.pull_filename = settings.PULL_SEGMENT_FILE
+        self.pull_filename = settings.PULL_FILES[DSP_NAME]['SEGMENT']
 
         # fetch 3 hours before last pulled timestamp
         self.pull_dt = None
