@@ -4,7 +4,7 @@ import os
 import logging
 import logging.config
 from common import settings, utils
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import boto3
 
@@ -62,7 +62,7 @@ class Pull:
                 obj = object_summary.Object()
                 self.copy_s3file_to_azure(obj)
 
-        utils.save_date(self.pull_file, utils.latest_date(dates))
+        utils.save_date(self.pull_file, (utils.latest_date(dates) - timedelta(hours=3)))
 
     def copy_s3file_to_azure(self, obj):
 
