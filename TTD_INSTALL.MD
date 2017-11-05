@@ -1,3 +1,5 @@
+```sql
+
 CREATE DATABASE SCOPED CREDENTIAL AzureTTDStorageCredential
 WITH
     IDENTITY = 'user',
@@ -171,3 +173,6 @@ WITH
 ,   REJECT_VALUE = 0
 )
 ;
+
+
+```
