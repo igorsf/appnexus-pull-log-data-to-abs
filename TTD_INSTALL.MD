@@ -88,17 +88,18 @@ CREATE EXTERNAL TABLE [ttd].ClickEvents (
     [log_entry_time] [nvarchar](20) NULL,
     [click_id] [nvarchar](36) NULL,
     [ip_address] [nvarchar](128) NULL,
-    [referrer_url] [nvarchar] (512) NULL,
+    [referrer_url1] [nvarchar] (4000) NULL,
+    [referrer_url2] [nvarchar] (4000) NULL,
     [campaign_id] [nvarchar](32) NULL,
     [channel_id] [nvarchar](32) NULL,
     [advertiser_id] [nvarchar](32) NULL,
     [display_impression_id] [nvarchar](36) NULL,
-    [keyword] [nvarchar] (512) NOT NULL,
+    [keyword] [nvarchar] (512) NULL,
     [keyword_id] [nvarchar](16) NULL,
     [match_type] [nvarchar] (16) NULL,
     [distribution_network] [nvarchar](255) NULL,
     [tdid] [nvarchar](36) NULL,
-    [raw_url] [nvarchar] (512) NULL,
+    [raw_url] [nvarchar] (4000) NULL,
     [processed_time] [datetime2](4) NULL,
     [device_id] [nvarchar](36) NULL
 )
@@ -150,7 +151,7 @@ CREATE EXTERNAL TABLE [ttd].Conversions (
     [ip_address] [nvarchar](128) NULL,
     [referrer_url] [nvarchar] (512) NULL,
     [monetary] [numeric](18,6) NULL,
-    [field] [nvarchar] (255) NOT NULL,
+    [field] [nvarchar] (255) NULL,
     [monetary_value_currency] [nvarchar](4) NULL,
     [order_id] [nvarchar] (255) NULL,
     [td1] [nvarchar](255) NULL,
@@ -168,7 +169,7 @@ WITH
 (
     LOCATION='/conversions/'
 ,   DATA_SOURCE = AzureRedsStorage
-,   FILE_FORMAT = TabDelimitedFile
+,   FILE_FORMAT = RedsTabDelimitedFile
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
