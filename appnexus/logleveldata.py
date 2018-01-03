@@ -101,7 +101,7 @@ class Pull:
                 counter += 1
 
                 container_name = 'feeds'
-                blob_name = 'standard_v2/' + filename
+                blob_name = 'standard_v3/' + filename
 
                 file_path = self.download_file(r.url, filename)
 
