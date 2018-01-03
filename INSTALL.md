@@ -424,9 +424,28 @@ WITH
 )
 ;
 
+-- Create new schema for appnexus tables
+CREATE SCHEMA [apn]
+GO
+
+-- Load the data into new tables
+CREATE TABLE [apn].[StandardFeedV1] 
+WITH (CLUSTERED COLUMNSTORE INDEX, DISTRIBUTION = ROUND_ROBIN)
+AS SELECT * FROM [asb].[StandardFeedV1]
+OPTION (LABEL = 'CTAS : Load [apn].[StandardFeedV1]');
+
+CREATE TABLE [apn].[StandardFeedV2] 
+WITH (CLUSTERED COLUMNSTORE INDEX, DISTRIBUTION = ROUND_ROBIN)
+AS SELECT * FROM [asb].[StandardFeedV2]
+OPTION (LABEL = 'CTAS : Load [apn].[StandardFeedV2]');
+
+-- To see a particular request identified by its label
+SELECT * FROM sys.dm_pdw_exec_requests as r
+WHERE r.[label] = 'CTAS : Load [apn].[StandardFeedV1]'
+      OR r.[label] = 'CTAS : Load [apn].[StandardFeedV2]';
 
 CREATE VIEW [asb].[StandardFeed] AS 
-SELECT * FROM [asb].StandardFeedV1 
+SELECT * FROM [apn].StandardFeedV1 
 UNION ALL 
 SELECT [auction_id_64], [timestamp], [user_tz_offset], [creative_width], [creative_height], [media_type], 
 [fold_position], [event_type], [imp_type], [payment_type], [media_cost_dollars_cpm], [revenue_type], [buyer_spend], 
@@ -447,7 +466,7 @@ SELECT [auction_id_64], [timestamp], [user_tz_offset], [creative_width], [creati
 [traffic_source_code], [external_request_id], [deal_type], [ym_floor_id], [ym_bias_id], [is_filtered_request], 
 [age], [gender], [is_exclusive], [bid_priority], [custom_model_id], [custom_model_last_modified], [leaf_name], 
 [data_costs_cpm], [device_type] 
-FROM [asb].StandardFeedV2
+FROM [apn].StandardFeedV2
 UNION ALL 
 SELECT [auction_id_64], [timestamp], [user_tz_offset], [creative_width], [creative_height], [media_type], 
 [fold_position], [event_type], [imp_type], [payment_type], [media_cost_dollars_cpm], [revenue_type], [buyer_spend], 
