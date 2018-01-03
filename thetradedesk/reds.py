@@ -60,7 +60,8 @@ class Pull:
             prefix = 'pj95up2/redf5aggregated/date={}/hour={}/'.format(date.strftime('%Y-%m-%d'), date.hour)
             for object_summary in self.bucket.objects.filter(Prefix=prefix):
                 obj = object_summary.Object()
-                self.copy_s3file_to_azure(obj)
+                if obj.content_length > 0:
+                    self.copy_s3file_to_azure(obj)
 
         utils.save_date(self.pull_file, (utils.latest_date(dates) - timedelta(hours=3)))
 
